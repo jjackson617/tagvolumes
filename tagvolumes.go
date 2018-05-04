@@ -9,17 +9,16 @@ import (
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
+	"github.com/lestrrat-go/strftime"
 )
 
 var region = "us-east-1"
 var id string
 
-
 func main() {
 
 	now := time.Now()
-	t := fmt.Sprintln(now.String())
-	fmt.Println(now.Format("2006-01-02 15:04:05"))
+	t, _ := strftime.Format("%Y-%m-%d", now) // YYYY-MM-DD
 
 	// config aws region and pull Volume from instance
 	svc := ec2.New(session.New(&aws.Config{Region: aws.String(region)}))
