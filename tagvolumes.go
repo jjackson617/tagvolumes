@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os/user"
+	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -14,6 +16,7 @@ import (
 
 var region = "us-east-1"
 var id string
+var tName string
 
 func main() {
 
@@ -50,13 +53,25 @@ func main() {
 
 	fmt.Println(*result.Volumes[0].VolumeId)
 
+	//user name
+	currentUser, err := user.Current()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	user := currentUser.Username //user var is set to username
+
+	user = strings.Replace(user, "\n", "", -1)
+
+	tName := user
+
 	// Add tags to the created instance
 	_, errtag := svc.CreateTags(&ec2.CreateTagsInput{
 		Resources: []*string{result.Volumes[0].VolumeId},
 		Tags: []*ec2.Tag{
 			{
 				Key:   aws.String("Name"),
-				Value: aws.String("jjackson-tomcat9"),
+				Value: aws.String(tName),
 			},
 			{
 				Key:   aws.String("env"),
