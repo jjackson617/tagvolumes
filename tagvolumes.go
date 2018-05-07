@@ -20,6 +20,7 @@ var tName string
 
 func main() {
 
+	id := "ENTER_STRING_HERE"
 	now := time.Now()
 	t, _ := strftime.Format("%Y-%m-%d", now) // YYYY-MM-DD
 
